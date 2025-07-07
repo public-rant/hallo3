@@ -25,7 +25,7 @@ test:
 
 
 install-tools:
-	apt update && apt install -y tmux vim ffmpeg
+	apt update && apt install -y tmux vim ffmpeg libaio-dev
 
 
 install-conda:
