@@ -1,0 +1,13 @@
+[1] apt update
+[2] apt install -y tmux vim ffmpeg
+[3]>6d48d264db4faba9c92ef516a265275086a254e7 sh ./miniconda.sh
+[4] source ~/miniconda3/bin/activate
+[5] conda init --all
+[6] conda create -n hallo python=3.10
+[7] conda activate hallo
+[8] pip install -r requirements.txt
+[9] bash scripts/inference_long_batch.sh ./examples/inference/input.txt ./output
+[0]>9a788d3d59e510936f489b80737820d601090fe8 RAW MATERIAL
+[0] bash scripts/data_preprocess.sh {dataset_name} {parallelism} {rank} {output_name}
+[0] python hallo3/app.py
+[0]>11e6ab306ef1dc5f03ef4aeda4c337a73ff28928 training
