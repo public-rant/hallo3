@@ -27,6 +27,9 @@ test:
 install-tools:
 	apt update && apt install -y tmux vim ffmpeg libaio-dev
 
+install-pip:
+	pip install -r requirements.txt
+
 
 install-conda:
 	mkdir -p ~/miniconda3
