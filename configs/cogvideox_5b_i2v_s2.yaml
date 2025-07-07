@@ -5,13 +5,13 @@ model:
   noised_image_input: true
   noised_image_all_concat: false
   noised_image_dropout: 0.05
-  not_trainable_prefixes: ['ref_model']
-  train_prefix: 
-    model: 
+  not_trainable_prefixes: ["ref_model"]
+  train_prefix:
+    model:
       - audio
   log_keys:
     - txt
-  
+
   denoiser_config:
     target: sgm.modules.diffusionmodules.denoiser.DiscreteDenoiser
     params:
@@ -25,7 +25,7 @@ model:
       discretization_config:
         target: sgm.modules.diffusionmodules.discretizer.ZeroSNRDDPMDiscretization
         params:
-          shift_scale: 1.0 
+          shift_scale: 1.0
 
   network_config:
     target: dit_video_concat.DiffusionTransformer
@@ -38,7 +38,7 @@ model:
       latent_height: 60
       num_layers: 42
       patch_size: 2
-      in_channels: 32  
+      in_channels: 32
       out_channels: 16
       hidden_size: 3072
       adm_in_channels: 256
@@ -88,7 +88,7 @@ model:
       latent_height: 60
       num_layers: 42
       patch_size: 2
-      in_channels: 32  
+      in_channels: 32
       out_channels: 16
       hidden_size: 3072
       adm_in_channels: 256
@@ -128,61 +128,61 @@ model:
     target: sgm.modules.GeneralConditioner
     params:
       emb_models:
-          - is_trainable: false
-            input_key: txt
-            ucg_rate: 0.1
-            target: sgm.modules.encoders.modules.FrozenT5Embedder
-            params:
-              model_dir: "./pretrained_models/t5-v1_1-xxl"
-              max_length: 226
+        - is_trainable: false
+          input_key: txt
+          ucg_rate: 0.1
+          target: sgm.modules.encoders.modules.FrozenT5Embedder
+          params:
+            model_dir: "./pretrained_models/t5-v1_1-xxl"
+            max_length: 226
 
   first_stage_config:
     target: vae_modules.autoencoder.VideoAutoencoderInferenceWrapper
     params:
-        cp_size: 1
-        ckpt_path: "./pretrained_models/cogvideox-5b-i2v-sat/vae/3d-vae.pt"
-        ignore_keys: ['loss']
+      cp_size: 1
+      ckpt_path: "./pretrained_models/cogvideox-5b-i2v-sat/vae/3d-vae.pt"
+      ignore_keys: ["loss"]
 
-        loss_config:
-          target: torch.nn.Identity
+      loss_config:
+        target: torch.nn.Identity
 
-        regularizer_config:
-          target: vae_modules.regularizers.DiagonalGaussianRegularizer
+      regularizer_config:
+        target: vae_modules.regularizers.DiagonalGaussianRegularizer
 
-        encoder_config:
-          target: vae_modules.cp_enc_dec.ContextParallelEncoder3D
-          params:
-            double_z: true
-            z_channels: 16
-            resolution: 256
-            in_channels: 3
-            out_ch: 3
-            ch: 128
-            ch_mult: [1, 2, 2, 4]
-            attn_resolutions: []
-            num_res_blocks: 3
-            dropout: 0.0
-            gather_norm: True
+      encoder_config:
+        target: vae_modules.cp_enc_dec.ContextParallelEncoder3D
+        params:
+          double_z: true
+          z_channels: 16
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult: [1, 2, 2, 4]
+          attn_resolutions: []
+          num_res_blocks: 3
+          dropout: 0.0
+          gather_norm: True
 
-        decoder_config:
-          target: vae_modules.cp_enc_dec.ContextParallelDecoder3D
-          params:
-            double_z: True
-            z_channels: 16
-            resolution: 256
-            in_channels: 3
-            out_ch: 3
-            ch: 128
-            ch_mult: [1, 2, 2, 4]
-            attn_resolutions: []
-            num_res_blocks: 3
-            dropout: 0.0
-            gather_norm: True
+      decoder_config:
+        target: vae_modules.cp_enc_dec.ContextParallelDecoder3D
+        params:
+          double_z: True
+          z_channels: 16
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult: [1, 2, 2, 4]
+          attn_resolutions: []
+          num_res_blocks: 3
+          dropout: 0.0
+          gather_norm: True
 
   loss_fn_config:
     target: sgm.modules.diffusionmodules.loss.VideoDiffusionLoss
     params:
-      batch2model_keys: 
+      batch2model_keys:
         - audio_emb
         - face_emb
       fixed_frames: 0
@@ -201,7 +201,7 @@ model:
     target: sgm.modules.diffusionmodules.sampling.VPSDEDPMPP2MSampler
     params:
       fixed_frames: 0
-      num_steps: 50
+      num_steps: 10
       verbose: True
 
       discretization_config:
@@ -214,4 +214,4 @@ model:
         params:
           scale: 6
           exp: 5
-          num_steps: 50
+          num_steps: 10
