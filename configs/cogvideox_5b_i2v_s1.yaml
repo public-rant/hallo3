@@ -220,4 +220,4 @@ model:
         params:
           scale: 6
           exp: 5
-          num_steps: 1
+          num_steps: 2

@@ -201,7 +201,7 @@ model:
     target: sgm.modules.diffusionmodules.sampling.VPSDEDPMPP2MSampler
     params:
       fixed_frames: 0
-      num_steps: 1
+      num_steps: 2
       verbose: True
 
       discretization_config:
@@ -214,4 +214,4 @@ model:
         params:
           scale: 6
           exp: 5
-          num_steps: 1
+          num_steps: 2
